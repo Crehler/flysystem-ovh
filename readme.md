@@ -5,7 +5,7 @@
 ## Installation
 
 ```bash
-composer require engineor/flysystem-ovh
+composer require crehler/flysystem-ovh
 ```
 
 ## Usage
