@@ -2,6 +2,7 @@
     "name": "crehler/flysystem-ovh",
     "description": "Flysystem adapter for OVH",
     "license": "MIT",
+    "version": "1.0",
     "authors": [
         {
             "name": "Crehler sp. z o. o.",
