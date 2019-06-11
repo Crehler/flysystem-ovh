@@ -11,6 +11,7 @@ use League\Flysystem\Util;
 use OpenCloud\ObjectStore\Exception\ObjectNotFoundException;
 use OpenCloud\ObjectStore\Resource\Container;
 use OpenCloud\ObjectStore\Resource\DataObject;
+use Symfony\Component\HttpFoundation\File\File;
 
 class OvhObjectStorageAdapter extends AbstractAdapter
 {
@@ -27,17 +28,25 @@ class OvhObjectStorageAdapter extends AbstractAdapter
      */
     protected $prefix;
 
+    protected $headers;
+
+    protected $expires;
+
     /**
      * Constructor.
      *
      * @param Container $container
      * @param string    $prefix
      */
-    public function __construct(Container $container, $prefix = null)
+    public function __construct(Container $container, $prefix = null, $headers = [], $expires = [])
     {
         $this->setPathPrefix($prefix);
 
+        $this->headers = $headers;
+
         $this->container = $container;
+
+        $this->expires = $expires;
     }
 
     /**
@@ -76,9 +85,26 @@ class OvhObjectStorageAdapter extends AbstractAdapter
             $headers =  $config->get('headers');
         }
 
+        $headers = array_merge($headers, $this->headers, $this->getExpireTag($path));
+
         $response = $this->container->uploadObject($location, $contents, $headers);
 
         return $this->normalizeObject($response);
+    }
+
+    protected function getExpireTag($path)
+    {
+        $fileExtension = end(explode('.', $path));
+        if(!isset($this->expires[$fileExtension])) return [];
+        try{
+            $date = new \DateTime('UTC');
+            $date->modify($this->expires[$fileExtension]);
+            $expires = $date->format('D, d M Y H:i:s \G\M\T');
+        }catch (\Exception $e){
+            return [];
+        }
+
+        return ['Expires' => $expires];
     }
 
     /**
