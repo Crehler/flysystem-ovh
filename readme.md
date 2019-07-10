@@ -13,8 +13,8 @@ composer require crehler/flysystem-ovh
 See configuration section for credential details.
 
 ```php
-use Engineor\Flysystem\OvhObjectStorage;
-use Engineor\Flysystem\OvhObjectStorageAdapter as Adapter;
+use Crehler\Flysystem\OvhObjectStorage;
+use Crehler\Flysystem\OvhObjectStorageAdapter as Adapter;
 use League\Flysystem\Filesystem;
 
 $client = new OvhObjectStorage([
@@ -32,9 +32,9 @@ $filesystem = new Filesystem(new Adapter($container));
 Alternatively:
 
 ```php
-use Engineor\Flysystem\OvhObjectStorage;
-use Engineor\Flysystem\OvhObjectStorageAdapter as Adapter;
-use League\Flysystem\Filesystem;
+use Crehler\Flysystem\OvhObjectStorage;
+use Crehler\Flysystem\OvhObjectStorageAdapter as Adapter;
+use Crehler\Flysystem\Filesystem;
 
 $options = [
     'username'  => ':username',
